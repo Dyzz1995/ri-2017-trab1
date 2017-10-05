@@ -40,7 +40,7 @@ public class XMLParser implements Strategy {
         for (File f : files) {
             Document document = parseFile(f);
             // Auto-increment in DOCNO of all Documents
-            if (document.getId() == 0 || document.getId() != documents.size() + 1)
+            if (document.getId() != documents.size() + 1)
                 document.setId(documents.size() + 1);
             documents.add(document);
         }
