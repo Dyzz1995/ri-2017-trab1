@@ -34,14 +34,16 @@ public class XMLHandler extends DefaultHandler {
        
        sb.append(ch, start, length);
        if (id) {
-         document.setId(Integer.parseInt(new String(ch, start, length).trim()));
-         id = false;
+           //Save if Document has DOCNO
+           if (new String(ch, start, length).trim().length() > 0)
+            document.setId(Integer.parseInt(new String(ch, start, length).trim()));
+           id = false;
       } else if (title) {
-         document.setTitle(new String(ch, start, length).trim());
-         title = false;
+          document.setTitle(new String(ch, start, length).trim());
+          title = false;
       } else if (author) {
-         document.setAuthor(new String(ch, start, length).trim());
-         author = false;
+          document.setAuthor(new String(ch, start, length).trim());
+          author = false;
       } else if (text) {
           text = false;
       }

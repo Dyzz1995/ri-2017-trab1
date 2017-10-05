@@ -11,6 +11,9 @@ public class CorpusReader {
     }
 
     public void addDocument(Document document) {
+        // Auto-increment in DOCNO
+        if (document.getId() == 0 || document.getId() != documents.size() + 1)
+            document.setId(documents.size() + 1);
         this.documents.add(document);
     }
 

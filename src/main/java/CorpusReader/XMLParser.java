@@ -38,7 +38,11 @@ public class XMLParser implements Strategy {
         Arrays.sort(files);
         List<Document> documents = new ArrayList<Document>();
         for (File f : files) {
-            documents.add(parseFile(f));
+            Document document = parseFile(f);
+            // Auto-increment in DOCNO of all Documents
+            if (document.getId() == 0 || document.getId() != documents.size() + 1)
+                document.setId(documents.size() + 1);
+            documents.add(document);
         }
         return documents;
     }
