@@ -6,6 +6,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class XMLHandler extends DefaultHandler {
    private Document document;
+   private StringBuffer sb;
    boolean id = false;
    boolean title = false;
    boolean author = false;
@@ -14,6 +15,7 @@ public class XMLHandler extends DefaultHandler {
    @Override
    public void startElement(String uri, 
    String localName, String qName, Attributes attributes) throws SAXException {
+       sb = new StringBuffer();
        if (qName.equalsIgnoreCase("DOC")) {
            document = new XMLDocument();
        } else if (qName.equalsIgnoreCase("DOCNO")) {
@@ -23,13 +25,15 @@ public class XMLHandler extends DefaultHandler {
       } else if (qName.equalsIgnoreCase("AUTHOR")) {
          author = true;
       } else if (qName.equalsIgnoreCase("TEXT")) {
-         text = true;
+          text = true;
       }
    }
 
    @Override
    public void characters(char ch[], int start, int length) throws SAXException {
-      if (id) {
+       
+       sb.append(ch, start, length);
+       if (id) {
          document.setId(Integer.parseInt(new String(ch, start, length).trim()));
          id = false;
       } else if (title) {
@@ -39,9 +43,14 @@ public class XMLHandler extends DefaultHandler {
          document.setAuthor(new String(ch, start, length).trim());
          author = false;
       } else if (text) {
-         document.setText(new String(ch, start, length).trim());
-         text = false;
+          text = false;
       }
+   }
+   
+   @Override
+   public void endElement(String uri, 
+   String localName, String qName) throws SAXException {
+      document.setText(sb.toString().trim());
    }
    
    public Document getDocument() {

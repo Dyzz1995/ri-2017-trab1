@@ -32,6 +32,7 @@ public abstract class Document {
     }
 
     public String getText() {
+       
         return text;
     }
 
