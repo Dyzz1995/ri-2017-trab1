@@ -4,7 +4,6 @@ import CorpusReader.Parser;
 import CorpusReader.XMLParser;
 import CorpusReader.CorpusReader;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
