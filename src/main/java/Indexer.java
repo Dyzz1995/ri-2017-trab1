@@ -11,8 +11,8 @@ public class Indexer {
     public Indexer(List<String> words, String path) {
         this.indexer = new HashMap<String,Pair<List<Integer>, Integer>>(); 
         this.words = words;
-        stopwordsFiltering();
         stemmingWords();
+        stopwordsFiltering();
         indexWords();
         writeToFile(path);
     }
@@ -21,11 +21,11 @@ public class Indexer {
         return indexer;
     }
     
-    private void stopwordsFiltering() {
+    private void stemmingWords() {
         
     }
     
-    private void stemmingWords() {
+    private void stopwordsFiltering() {
         
     }
     
