@@ -1,16 +1,17 @@
 
+import CorpusReader.Document;
 import java.util.HashMap;
 import java.util.List;
 
 public class Indexer {
     //HashMap<term, ([posting list], term frequency)>
     private HashMap<String,Pair<List<Integer>, Integer>> indexer;
-    private List<String> words;
+    private List<Document> documents;
     private List<String> stopwords;
     
-    public Indexer(List<String> words, String path) {
+    public Indexer(List<Document> documents, String path) {
         this.indexer = new HashMap<String,Pair<List<Integer>, Integer>>(); 
-        this.words = words;
+        this.documents = documents;
         stemmingWords();
         stopwordsFiltering();
         indexWords();
