@@ -1,4 +1,4 @@
-package Tokenizers;
+package Utils;
 
 public class Pair<K, V> {
     private K key;

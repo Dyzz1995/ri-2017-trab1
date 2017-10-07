@@ -3,6 +3,9 @@ import Tokenizers.SimpleTokenizer;
 import CorpusReader.Parser;
 import CorpusReader.XMLParser;
 import CorpusReader.CorpusReader;
+import CorpusReader.Document;
+import Tokenizers.CompleteTokenizer;
+import Utils.Pair;
 import java.io.File;
 import java.util.List;
 
@@ -18,15 +21,15 @@ public class Main {
                 }
                 Parser parser = new Parser(new XMLParser());
                 CorpusReader corpus = new CorpusReader();
-                List<String> words;
+                List<Document> documents;
                 if (file.isDirectory())
                     corpus.setDocuments(parser.parseDir(file));
                 else
                     corpus.addDocument(parser.parseFile(file));
+                documents = corpus.getDocuments();
                 if (args.length == 2 && args[1].equals("N")) {
                     SimpleTokenizer simpleTokenizer = new SimpleTokenizer();
-                    words = simpleTokenizer.tokenize(corpus.getDocuments());
-                    System.out.println(words);
+                    List<String> words = simpleTokenizer.tokenize(documents);
                 }
                 if (args.length == 3 && args[1].equals("Y")) {
                     File newFile = new File(args[2]);
@@ -34,7 +37,9 @@ public class Main {
                         System.err.println("ERROR: The file you want to create already exists!");
                         System.exit(1);
                     } else {
-                        //TODO: index
+                        CompleteTokenizer completeTokenizer = new CompleteTokenizer();
+                        List<Pair<String, Integer>> words = completeTokenizer.tokenize(documents);
+                        System.out.println(words);
                     }
                 } else if (args.length == 2 && args[1].equals("Y")) {
                     System.err.println("ERROR: Invalid arguments!");

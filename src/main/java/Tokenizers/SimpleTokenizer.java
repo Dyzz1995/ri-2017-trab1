@@ -4,11 +4,10 @@ import CorpusReader.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleTokenizer implements Tokenizer{
+public class SimpleTokenizer{
     
     public SimpleTokenizer() { }
     
-    @Override
     public List<String> tokenize(List<Document> documents) {
         List<String> words = new ArrayList<>();
         for(int i = 0; i < documents.size(); i++){
