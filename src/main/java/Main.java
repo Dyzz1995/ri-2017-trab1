@@ -4,14 +4,16 @@ import CorpusReader.Parser;
 import CorpusReader.XMLParser;
 import CorpusReader.CorpusReader;
 import CorpusReader.Document;
+import Indexer.Indexer;
 import Tokenizers.CompleteTokenizer;
 import Utils.Pair;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         if (args.length >= 2) {
             if (args[1].equals("N") || args[1].equals("Y")) {
                 File file = new File(args[0]);
@@ -22,6 +24,7 @@ public class Main {
                 Parser parser = new Parser(new XMLParser());
                 CorpusReader corpus = new CorpusReader();
                 List<Document> documents;
+                List<Pair<String, Integer>> words;
                 if (file.isDirectory())
                     corpus.setDocuments(parser.parseDir(file));
                 else
@@ -29,7 +32,7 @@ public class Main {
                 documents = corpus.getDocuments();
                 if (args.length == 2 && args[1].equals("N")) {
                     SimpleTokenizer simpleTokenizer = new SimpleTokenizer();
-                    List<String> words = simpleTokenizer.tokenize(documents);
+                    words = simpleTokenizer.tokenize(documents);
                 }
                 if (args.length == 3 && args[1].equals("Y")) {
                     File newFile = new File(args[2]);
@@ -38,7 +41,8 @@ public class Main {
                         System.exit(1);
                     } else {
                         CompleteTokenizer completeTokenizer = new CompleteTokenizer();
-                        List<Pair<String, Integer>> words = completeTokenizer.tokenize(documents);
+                        words = completeTokenizer.tokenize(documents);
+                        Indexer indexer = new Indexer(words, args[2]);
                         System.out.println(words);
                     }
                 } else if (args.length == 2 && args[1].equals("Y")) {

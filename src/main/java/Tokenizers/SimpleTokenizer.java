@@ -1,15 +1,17 @@
 package Tokenizers;
 
 import CorpusReader.Document;
+import Utils.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleTokenizer{
+public class SimpleTokenizer implements Tokenizer{
     
     public SimpleTokenizer() { }
     
-    public List<String> tokenize(List<Document> documents) {
-        List<String> words = new ArrayList<>();
+    @Override
+    public List<Pair<String, Integer>> tokenize(List<Document> documents) {
+        List<Pair<String, Integer>>  words = new ArrayList<>();
         for(int i = 0; i < documents.size(); i++){
             Document document = documents.get(i);
             String content = document.getTitle() + "\n" + document.getText();
@@ -17,7 +19,7 @@ public class SimpleTokenizer{
             String[] temp = newContent.split(" ");
             for(String s : temp){
                 if(s.length()>=3)
-                    words.add(s.toLowerCase());
+                    words.add(new Pair<>(s.toLowerCase(), document.getId()));
             }
         }
         return words;
