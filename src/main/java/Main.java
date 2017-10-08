@@ -24,7 +24,6 @@ public class Main {
                 Parser parser = new Parser(new XMLParser());
                 CorpusReader corpus = new CorpusReader();
                 List<Document> documents;
-                List<Pair<String, Integer>> words;
                 if (file.isDirectory())
                     corpus.setDocuments(parser.parseDir(file));
                 else
@@ -32,7 +31,7 @@ public class Main {
                 documents = corpus.getDocuments();
                 if (args.length == 2 && args[1].equals("N")) {
                     SimpleTokenizer simpleTokenizer = new SimpleTokenizer();
-                    words = simpleTokenizer.tokenize(documents);
+                    List<String> terms = simpleTokenizer.tokenize(documents);
                 }
                 if (args.length == 3 && args[1].equals("Y")) {
                     File newFile = new File(args[2]);
@@ -41,9 +40,8 @@ public class Main {
                         System.exit(1);
                     } else {
                         CompleteTokenizer completeTokenizer = new CompleteTokenizer();
-                        words = completeTokenizer.tokenize(documents);
+                        List<Pair<String, Integer>> words = completeTokenizer.tokenize(documents);
                         Indexer indexer = new Indexer(words, args[2]);
-                        System.out.println(words);
                     }
                 } else if (args.length == 2 && args[1].equals("Y")) {
                     System.err.println("ERROR: Invalid arguments!");
