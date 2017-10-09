@@ -13,7 +13,26 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
+/**
+ * IR, October 2017
+ *
+ * Assignment 1 
+ *
+ * @author Tiago Faria, 73714, tiagohpf@ua.pt
+ * @author David dos Santos Ferreira, 72219, davidsantosferreira@ua.pt
+ * 
+ */
+
+/*
+* XML Parser.
+* Class that parser files, more specifically, XML Files.
+*/
 public class XMLParser implements Strategy {
+    /**
+     * Parse a certain file.
+     * @param file
+     * @return Document
+     */
     @Override
     public Document parseFile(File file) {
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
@@ -22,21 +41,22 @@ public class XMLParser implements Strategy {
             XMLHandler handler = new XMLHandler();
             saxParser.parse(file, handler);
             return handler.getDocument();
-        } catch (ParserConfigurationException  ex) {
-            Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SAXException  ex) {
-            Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (ParserConfigurationException | SAXException | IOException  ex) {
             Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
     
+    /**
+     * Parse a certain directory.
+     * @param file
+     * @return List of Documents
+     */
     @Override
     public List<Document> parseDir(File file) {
         File []files = file.listFiles();
         Arrays.sort(files);
-        List<Document> documents = new ArrayList<Document>();
+        List<Document> documents = new ArrayList<>();
         for (File f : files) {
             Document document = parseFile(f);
             // Auto-increment in DOCNO of all Documents

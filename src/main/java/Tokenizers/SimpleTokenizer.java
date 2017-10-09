@@ -3,110 +3,64 @@ package Tokenizers;
 import CorpusReader.Document;
 import Utils.Pair;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+/**
+ * IR, October 2017
+ *
+ * Assignment 1 
+ *
+ * @author Tiago Faria, 73714, tiagohpf@ua.pt
+ * @author David dos Santos Ferreira, 72219, davidsantosferreira@ua.pt
+ * 
+ */
+
+/*
+* Simple Tokenizer.
+* Class that tokenizes a file or a directory, divided by whitespaces.
+*/
 public class SimpleTokenizer{
-    private List<Pair<String, Integer>> words;
+    private List<Pair<String, Integer>> terms;
     
+    /**
+     * Constructor. Given a list of documents, all ara tokenized and sorted alphabetically.
+     * @param documents
+     */
     public SimpleTokenizer(List<Document> documents) {
-        words = new ArrayList<>();
+        terms = new ArrayList<>();
         tokenize(documents);
-        sortWords();
     }
     
+    /**
+     * Get all terms of tokenizer.
+     * @return list of terms
+     */
+    public List<Pair<String, Integer>> getTerms() {
+        return terms;
+    }
+    
+    /**
+     * Get vocabulary size.
+     * @return size of terms list
+     */
     public int getVocabularySize() {
-        return words.size();
+        return terms.size();
     }
     
-    public List<String> getTenTermsInOneDoc() {
-        List<String> terms = new ArrayList<>();
-        for (Pair<String, Integer> term : words) {
-            List<Integer> filter =
-                words.stream()                                             
-                    .filter(line -> line.getKey().equals(term.getKey()))
-                    .map(line -> line.getValue())
-                    .collect(Collectors.toList());                          
-            Set<Integer> set = new HashSet<>(filter);
-            if (filter.size() == set.size() && set.size() == 1) {
-                terms.add(term.getKey());
-                if (terms.size() == 10)
-                    break;
-            }
-        }
-        return terms;
-    }
-    
-    public List<Pair<String, Integer>> getTermsWithHigherFreq() {
-        List<Pair<String, Integer>> termsFreq = getTermsAndFreq();
-        Comparator<Pair<String, Integer>> comp = (Pair<String, Integer> a, Pair<String, Integer> b) -> {
-            String s1 = a.getKey();
-            int d1 = a.getValue();
-            String s2 = b.getKey();
-            int d2 = b.getValue();
-            int res;
-            if (d1 > d2 || (d1 == d2 && s1.compareTo(s2) > 0))
-                res = -1;
-            else
-                res = 1;
-            return res;
-        };
-        Collections.sort(termsFreq, comp);
-        List<Pair<String, Integer>> terms = new ArrayList<>();
-        for (int i = 0; i < 10; i++)
-            terms.add(new Pair<>(termsFreq.get(i).getKey(),termsFreq.get(i).getValue()));
-        return terms;
-    }
-    
-    private List<Pair<String, Integer>> getTermsAndFreq() {
-        List<Pair<String, Integer>> pairs = new ArrayList<>();
-        List<String> filterWords =
-                words.stream()                                             
-                .map(line -> line.getKey())
-                .collect(Collectors.toList()); 
-        Set<String> setTerms = new HashSet<>(filterWords);
-        for (String term : setTerms) {
-            List<Integer> filterFreq =
-                    words.stream()                                             
-                    .filter(line -> line.getKey().equals(term))
-                    .map(line -> line.getValue())
-                    .collect(Collectors.toList());
-            Set<Integer> setFreq = new HashSet<>(filterFreq);
-            pairs.add(new Pair<>(term, setFreq.size()));
-        }
-        return pairs;
-    }
-    
+    // Tokenizing all documents.
     private void tokenize(List<Document> documents) {
         for(int i = 0; i < documents.size(); i++){
             Document document = documents.get(i);
             String content = document.getTitle() + "\n" + document.getText();
+            // Remove all non-alphabetical characters.
             String newContent = content.replaceAll("[^a-zA-Z ]", " ");
+            // Tokenize by whitespaces.
             String[] temp = newContent.split(" ");
             for(String s : temp){
+                // Only accept words with equal or more than 3 characters.
                 if(s.trim().length() >=3 )
-                    words.add(new Pair<>(s.trim().toLowerCase(), document.getId()));
+                    terms.add(new Pair<>(s.trim().toLowerCase(), document.getId()));
             }
         }
-    }
-    
-     private void sortWords() {
-        Comparator<Pair<String, Integer>> comp = (Pair<String, Integer> a, Pair<String, Integer> b) -> {
-            String s1 = a.getKey();
-            int d1 = a.getValue();
-            String s2 = b.getKey();
-            int d2 = b.getValue();
-            int res;
-            if (s1.compareTo(s2) > 0 || (s1.equals(s2) && d1 > d2))
-                res = 1;
-            else
-                res = -1;
-            return res;
-        };
-        Collections.sort(words, comp);
     }
 }

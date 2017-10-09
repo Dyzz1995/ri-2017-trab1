@@ -4,6 +4,20 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * IR, October 2017
+ *
+ * Assignment 1 
+ *
+ * @author Tiago Faria, 73714, tiagohpf@ua.pt
+ * @author David dos Santos Ferreira, 72219, davidsantosferreira@ua.pt
+ * 
+ */
+
+/*
+* Constructor.
+* XML Handler is a class that handles XML files, using the SAX parser.
+*/
 public class XMLHandler extends DefaultHandler {
    private Document document;
    private StringBuffer sb;
@@ -12,7 +26,15 @@ public class XMLHandler extends DefaultHandler {
    boolean author = false;
    boolean text = false;
 
-   @Override
+    /**
+     * Check attributes in XML file.
+     * @param uri
+     * @param localName
+     * @param qName
+     * @param attributes
+     * @throws SAXException
+     */
+    @Override
    public void startElement(String uri, 
    String localName, String qName, Attributes attributes) throws SAXException {
        sb = new StringBuffer();
@@ -29,7 +51,14 @@ public class XMLHandler extends DefaultHandler {
       }
    }
 
-   @Override
+    /**
+     * Set the attributes in Document's Object.
+     * @param ch
+     * @param start
+     * @param length
+     * @throws SAXException
+     */
+    @Override
    public void characters(char ch[], int start, int length) throws SAXException {
        
        sb.append(ch, start, length);
@@ -49,13 +78,24 @@ public class XMLHandler extends DefaultHandler {
       }
    }
    
-   @Override
+    /**
+     * Finish the read of the element in XML file.
+     * @param uri
+     * @param localName
+     * @param qName
+     * @throws SAXException
+     */
+    @Override
    public void endElement(String uri, 
    String localName, String qName) throws SAXException {
       document.setText(sb.toString().trim());
    }
    
-   public Document getDocument() {
+    /**
+     * Return the Document read.
+     * @return Document
+     */
+    public Document getDocument() {
        return document;
    }
 }

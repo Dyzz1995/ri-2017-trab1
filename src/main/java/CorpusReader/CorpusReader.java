@@ -3,13 +3,29 @@ package CorpusReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * IR, October 2017
+ *
+ * Assignment 1 
+ *
+ * @author Tiago Faria, 73714, tiagohpf@ua.pt
+ * @author David dos Santos Ferreira, 72219, davidsantosferreira@ua.pt
+ * 
+ */
 public class CorpusReader {
     private List<Document> documents;
 
+    /**
+     * Constructor. The classe manages a list of documents.
+     */
     public CorpusReader() {
-        this.documents = new ArrayList<Document>();
+        this.documents = new ArrayList<>();
     }
 
+    /**
+     * Add document to list.
+     * @param document
+     */
     public void addDocument(Document document) {
         // Auto-increment in DOCNO
         if (document.getId() != documents.size() + 1)
@@ -17,10 +33,18 @@ public class CorpusReader {
         this.documents.add(document);
     }
 
+    /**
+     * Return list of documents.
+     * @return list of documents
+     */
     public List<Document> getDocuments() {
         return documents;
     }
     
+    /**
+     * Set a new document's list
+     * @param documents
+     */
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
     }
