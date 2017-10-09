@@ -4,6 +4,7 @@ package Indexer;
 import Utils.Pair;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +23,7 @@ public class Indexer {
     private final List<String> stopwords;
     private Map<String, List<Pair<Integer, Integer>>> indexer;
     
-    public Indexer(List<Pair<String, Integer>> words, String path) throws FileNotFoundException {
+    public Indexer(List<Pair<String, Integer>> words, File file) throws FileNotFoundException {
         this.words = words;
         stopwords = new ArrayList<>();
         indexer = new TreeMap<>();
@@ -30,7 +31,11 @@ public class Indexer {
         stopwordsFiltering();
         stemmingWords();
         indexWords();
-        writeToFile(path);
+        writeToFile(file);
+    }
+    
+    public int getVocabularySize() {
+        return indexer.size();
     }
     
     private void loadStopwords() throws FileNotFoundException {
@@ -86,24 +91,20 @@ public class Indexer {
         }
     }
     
-    private void sortWords() {
-        Comparator<Pair<String, Integer>> comp = (Pair<String, Integer> a, Pair<String, Integer> b) -> {
-            String s1 = a.getKey();
-            int d1 = a.getValue();
-            String s2 = b.getKey();
-            int d2 = b.getValue();
-            int res;
-            if (s1.compareTo(s2) > 0 || (s1.equals(s2) && d1 > d2))
-                res = 1;
-            else
-                res = -1;
-            return res;
-        };
-        Collections.sort(words, comp);
-        System.out.println(words.size());
-    }
-    
-    private void writeToFile(String path) {
-        
+    private void writeToFile(File file) throws FileNotFoundException {
+        PrintWriter pw = new PrintWriter(file);
+        for (Map.Entry<String, List<Pair<Integer, Integer>>> entry : indexer.entrySet()) {
+            pw.print(entry.getKey() + ",");
+            List<Pair<Integer, Integer>> listFrequencies = entry.getValue();
+            for (int i = 0; i < listFrequencies.size(); i++) {
+                int docId = listFrequencies.get(i).getKey();
+                int freq = listFrequencies.get(i).getValue();
+                if (i == listFrequencies.size() - 1)
+                    pw.print(docId + ":" + freq + "\n");
+                else
+                    pw.print(docId + ":" + freq + ",");
+            }
+        }
+        pw.close();
     }
 }

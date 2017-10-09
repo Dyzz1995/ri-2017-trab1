@@ -20,6 +20,7 @@ public class CompleteTokenizer {
             String []text = content.split(" ");
             for (int i = 0; i < text.length; i++) {
                 String term = text[i];
+                //TODO: REVIEW
                 // Remove '-' in small words. Otherwise, keep the term
                 if (term.contains("-")) {
                     term = term.replaceAll("[.,]", "");
@@ -29,9 +30,12 @@ public class CompleteTokenizer {
                         else if (term.length() < 10)
                             term = term.replaceAll("-", "");
                     }
-                    else if (term.length() >= 2 && term.charAt(0) == '-' && Character.isLetter(term.charAt(1)))
-                        term = term.replaceAll("-", "");
-                    else if (term.length() <= 1 || term.length() > 10)
+                    else if (term.length() >= 2 && term.charAt(0) == '-' && Character.isLetter(term.charAt(1))) {
+                        term = term.substring(1, term.length());
+                        if (term.length() < 10)
+                           term = term.replaceAll("-", ""); 
+                    }
+                    else if (term.length() <= 1 || term.length() < 10)
                         term = term.replaceAll("-", "");
                 }
                 // In case of number like 92.3, keep the term
@@ -63,7 +67,9 @@ public class CompleteTokenizer {
                     }
                     else
                         term = term.replaceAll("[,.-]", "");
-                } 
+                }
+                else if (term.length() == 1 && term.charAt(0) == '=') {
+                    term = term.replaceAll("=", "");                }
                 // Just add tokens with content
                 if (term.trim().length() > 0)
                     words.add(new Pair<>(term, id));

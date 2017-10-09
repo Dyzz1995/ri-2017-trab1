@@ -30,8 +30,22 @@ public class Main {
                     corpus.addDocument(parser.parseFile(file));
                 documents = corpus.getDocuments();
                 if (args.length == 2 && args[1].equals("N")) {
-                    SimpleTokenizer simpleTokenizer = new SimpleTokenizer();
-                    List<String> terms = simpleTokenizer.tokenize(documents);
+                    SimpleTokenizer simpleTokenizer = new SimpleTokenizer(documents);
+                    System.out.println("**********************************************");
+                    System.out.println("Simple Tokenizer");
+                    System.out.println("----------------------------------------------");
+                    System.out.println("Vocabulary Size: " + simpleTokenizer.getVocabularySize());
+                    System.out.println("----------------------------------------------");
+                    System.out.println("First 10 terms in only one document:"); 
+                    List<String> terms = simpleTokenizer.getTenTermsInOneDoc();
+                    for (String term : terms)
+                        System.out.println(term);
+                    System.out.println("----------------------------------------------");
+                    System.out.println("First 10 terms with higher document frequency:"); 
+                    List<Pair<String, Integer>>  termsFreq = simpleTokenizer.getTermsWithHigherFreq();
+                    for (Pair<String, Integer>term : termsFreq)
+                        System.out.println(term);
+                    System.out.println("**********************************************");
                 }
                 if (args.length == 3 && args[1].equals("Y")) {
                     File newFile = new File(args[2]);
@@ -41,7 +55,12 @@ public class Main {
                     } else {
                         CompleteTokenizer completeTokenizer = new CompleteTokenizer();
                         List<Pair<String, Integer>> words = completeTokenizer.tokenize(documents);
-                        Indexer indexer = new Indexer(words, args[2]);
+                        Indexer indexer = new Indexer(words, newFile);
+                        System.out.println("*******************************");
+                        System.out.println("Indexer with Complete Tokenizer");
+                        System.out.println("-------------------------------");
+                        System.out.println("Vocabulary Size: " + indexer.getVocabularySize());
+                        System.out.println("*******************************");
                     }
                 } else if (args.length == 2 && args[1].equals("Y")) {
                     System.err.println("ERROR: Invalid arguments!");
