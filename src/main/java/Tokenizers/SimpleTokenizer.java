@@ -32,7 +32,7 @@ public class SimpleTokenizer{
                     .map(line -> line.getValue())
                     .collect(Collectors.toList());                          
             Set<Integer> set = new HashSet<>(filter);
-            if (filter.size() == set.size()) {
+            if (filter.size() == set.size() && set.size() == 1) {
                 terms.add(term.getKey());
                 if (terms.size() == 10)
                     break;
@@ -85,11 +85,11 @@ public class SimpleTokenizer{
         for(int i = 0; i < documents.size(); i++){
             Document document = documents.get(i);
             String content = document.getTitle() + "\n" + document.getText();
-            String newContent = content.replaceAll("[^a-zA-Z ]", "");
+            String newContent = content.replaceAll("[^a-zA-Z ]", " ");
             String[] temp = newContent.split(" ");
             for(String s : temp){
-                if(s.length() >=3 )
-                    words.add(new Pair<>(s.toLowerCase(), document.getId()));
+                if(s.trim().length() >=3 )
+                    words.add(new Pair<>(s.trim().toLowerCase(), document.getId()));
             }
         }
     }
