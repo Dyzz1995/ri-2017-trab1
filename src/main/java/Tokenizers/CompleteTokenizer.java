@@ -19,16 +19,12 @@ import java.util.List;
 * Complete Tokenizer.
 * Class that tokenizes a file or a directory, given special attention to certain characters.
 */
-public class CompleteTokenizer {
+public class CompleteTokenizer implements Tokenizer{
     private List<Pair<String, Integer>> terms;
     
-    /**
-     * Constructor. Given a list of documents, all are tokenized.
-     * @param documents
-     */
-    public CompleteTokenizer(List<Document> documents) {
+    // Constructor
+    public CompleteTokenizer() {
         terms = new ArrayList<>();
-        tokenize(documents);
     }
     
     /**
@@ -40,7 +36,7 @@ public class CompleteTokenizer {
     }
     
     // Tokenizing all documents.
-    private void tokenize(List<Document> documents) {
+    public void tokenize(List<Document> documents) {
         for (Document document : documents) {
             int id = document.getId();
             // Remove some special characters

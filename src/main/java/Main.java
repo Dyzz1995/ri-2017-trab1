@@ -60,7 +60,8 @@ public class Main {
                 Indexer indexer;
                 // Use of Simple Tokenizer
                 if (args[1].equals("t1")) {
-                    SimpleTokenizer simpleTokenizer = new SimpleTokenizer(documents);
+                    SimpleTokenizer simpleTokenizer = new SimpleTokenizer();
+                    simpleTokenizer.tokenize(documents);
                     listTerms = simpleTokenizer.getTerms();
                     System.out.println("**********************************************");
                     System.out.println("Indexer with Simple Tokenizer");
@@ -68,7 +69,8 @@ public class Main {
                 }
                 // Use of Complete Tokenizer
                 else {
-                    CompleteTokenizer completeTokenizer = new CompleteTokenizer(documents);
+                    CompleteTokenizer completeTokenizer = new CompleteTokenizer();
+                    completeTokenizer.tokenize(documents);
                     listTerms = completeTokenizer.getTerms();
                     System.out.println("**********************************************");
                     System.out.println("Indexer with Complete Tokenizer");

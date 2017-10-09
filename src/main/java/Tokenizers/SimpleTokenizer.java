@@ -19,16 +19,12 @@ import java.util.List;
 * Simple Tokenizer.
 * Class that tokenizes a file or a directory, divided by whitespaces.
 */
-public class SimpleTokenizer{
+public class SimpleTokenizer implements Tokenizer{
     private List<Pair<String, Integer>> terms;
     
-    /**
-     * Constructor. Given a list of documents, all ara tokenized and sorted alphabetically.
-     * @param documents
-     */
-    public SimpleTokenizer(List<Document> documents) {
+    // Constructor
+    public SimpleTokenizer() {
         terms = new ArrayList<>();
-        tokenize(documents);
     }
     
     /**
@@ -48,7 +44,7 @@ public class SimpleTokenizer{
     }
     
     // Tokenizing all documents.
-    private void tokenize(List<Document> documents) {
+    public void tokenize(List<Document> documents) {
         for(int i = 0; i < documents.size(); i++){
             Document document = documents.get(i);
             String content = document.getTitle() + "\n" + document.getText();
