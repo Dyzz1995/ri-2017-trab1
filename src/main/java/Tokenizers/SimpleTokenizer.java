@@ -42,7 +42,7 @@ public class SimpleTokenizer{
     }
     
     public List<Pair<String, Integer>> getTermsWithHigherFreq() {
-        List<Pair<String, Integer>> termsFreq = orderTermsByFreq();
+        List<Pair<String, Integer>> termsFreq = getTermsAndFreq();
         Comparator<Pair<String, Integer>> comp = (Pair<String, Integer> a, Pair<String, Integer> b) -> {
             String s1 = a.getKey();
             int d1 = a.getValue();
@@ -62,7 +62,7 @@ public class SimpleTokenizer{
         return terms;
     }
     
-    private List<Pair<String, Integer>> orderTermsByFreq() {
+    private List<Pair<String, Integer>> getTermsAndFreq() {
         List<Pair<String, Integer>> pairs = new ArrayList<>();
         List<String> filterWords =
                 words.stream()                                             

@@ -37,7 +37,7 @@ that
 these
 those
 am             
-is             
+is          
 are            
 was            
 were           

@@ -33,7 +33,7 @@ public class Main {
                     SimpleTokenizer simpleTokenizer = new SimpleTokenizer(documents);
                     System.out.println("**********************************************");
                     System.out.println("Simple Tokenizer");
-                    System.out.println("----------------------------------------------");
+                    System.out.println("**********************************************");
                     System.out.println("Vocabulary Size: " + simpleTokenizer.getVocabularySize());
                     System.out.println("----------------------------------------------");
                     System.out.println("First 10 terms in only one document:"); 
@@ -53,14 +53,24 @@ public class Main {
                         System.err.println("ERROR: The file you want to create already exists!");
                         System.exit(1);
                     } else {
-                        CompleteTokenizer completeTokenizer = new CompleteTokenizer();
-                        List<Pair<String, Integer>> words = completeTokenizer.tokenize(documents);
-                        Indexer indexer = new Indexer(words, newFile);
-                        System.out.println("*******************************");
+                        CompleteTokenizer completeTokenizer = new CompleteTokenizer(documents);
+                        List<Pair<String, Integer>> terms = completeTokenizer.getTerms();
+                        Indexer indexer = new Indexer(terms, newFile);
+                        System.out.println("**********************************************");
                         System.out.println("Indexer with Complete Tokenizer");
-                        System.out.println("-------------------------------");
+                        System.out.println("**********************************************");
                         System.out.println("Vocabulary Size: " + indexer.getVocabularySize());
-                        System.out.println("*******************************");
+                        System.out.println("----------------------------------------------");
+                        System.out.println("First 10 terms in only one document:");
+                        List<String> termsFreqOneDoc = indexer.getTenTermsInOneDoc(); 
+                        for (String term : termsFreqOneDoc)
+                            System.out.println(term);
+                        System.out.println("----------------------------------------------");
+                        System.out.println("First 10 terms with higher document frequency:");
+                        List<Pair<String, Integer>> termsFreq = indexer.getTermsWithHigherFreq();
+                        for (Pair<String, Integer> term : termsFreq)
+                            System.out.println(term);
+                        System.out.println("**********************************************");
                     }
                 } else if (args.length == 2 && args[1].equals("Y")) {
                     System.err.println("ERROR: Invalid arguments!");

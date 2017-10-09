@@ -38,13 +38,55 @@ public class Indexer {
         return indexer.size();
     }
     
+    public List<String> getTenTermsInOneDoc() {
+        List<String> terms = new ArrayList<>();
+        for (Map.Entry<String, List<Pair<Integer, Integer>>> entry : indexer.entrySet()) {
+            String word = entry.getKey();
+            List<Pair<Integer, Integer>> listFrequencies = entry.getValue();
+            if (listFrequencies.size() == 1)
+                terms.add(word);
+            if (terms.size() == 10)
+                break;
+        }
+        return terms;
+    }
+    
+    public List<Pair<String, Integer>> getTermsWithHigherFreq() {
+        List<Pair<String, Integer>> termsFreq = getTermsAndFreq();
+        Comparator<Pair<String, Integer>> comp = (Pair<String, Integer> a, Pair<String, Integer> b) -> {
+            String s1 = a.getKey();
+            int d1 = a.getValue();
+            String s2 = b.getKey();
+            int d2 = b.getValue();
+            int res;
+            if (d1 > d2 || (d1 == d2 && s1.compareTo(s2) > 0))
+                res = -1;
+            else
+                res = 1;
+            return res;
+        };
+        Collections.sort(termsFreq, comp);
+        List<Pair<String, Integer>> terms = new ArrayList<>();
+        for (int i = 0; i < 10; i++)
+            terms.add(new Pair<>(termsFreq.get(i).getKey(),termsFreq.get(i).getValue()));
+        return terms;
+    }
+    
+    private List<Pair<String, Integer>> getTermsAndFreq() {
+        List<Pair<String, Integer>> termsFreq = new ArrayList<>();
+        for (Map.Entry<String, List<Pair<Integer, Integer>>> entry : indexer.entrySet()) {
+            termsFreq.add(new Pair<>(entry.getKey(), entry.getValue().size()));
+        }
+        return termsFreq;
+    }
+    
     private void loadStopwords() throws FileNotFoundException {
         File file = new File ("stopwords.txt");
         Scanner sc = new Scanner(file);
         while (sc.hasNext()) {
             String word = sc.nextLine();
-            if (word.length() > 0)
-                stopwords.add(word);
+            if (word.trim().length() > 0)
+                stopwords.add(word.trim());
         }
     }
     

@@ -2,15 +2,23 @@ package Tokenizers;
 
 import CorpusReader.Document;
 import Utils.Pair;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompleteTokenizer {
+    private List<Pair<String, Integer>> words;
     
-    public CompleteTokenizer() { }
+    public CompleteTokenizer(List<Document> documents) {
+        words = new ArrayList<>();
+        tokenize(documents);
+    }
     
-    public List<Pair<String, Integer>> tokenize(List<Document> documents) {
-        List<Pair<String, Integer>> words = new ArrayList<>();
+    public List<Pair<String, Integer>> getTerms() {
+        return words;
+    }
+    
+    private void tokenize(List<Document> documents) {
         for (Document document : documents) {
             int id = document.getId();
             //Remove some special characters
@@ -75,7 +83,6 @@ public class CompleteTokenizer {
                     words.add(new Pair<>(term, id));
             }
         }
-        return words;
     }
     
 }
