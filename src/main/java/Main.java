@@ -1,4 +1,6 @@
 
+
+
 import Tokenizers.SimpleTokenizer;
 import CorpusReader.Parser;
 import CorpusReader.XMLParser;
@@ -58,8 +60,10 @@ public class Main {
                 }
                 List<Pair<String, Integer>> listTerms;
                 Indexer indexer;
+                long startTime;
                 // Use of Simple Tokenizer
                 if (args[1].equals("t1")) {
+                    startTime = System.currentTimeMillis();
                     SimpleTokenizer simpleTokenizer = new SimpleTokenizer();
                     simpleTokenizer.tokenize(documents);
                     listTerms = simpleTokenizer.getTerms();
@@ -69,6 +73,7 @@ public class Main {
                 }
                 // Use of Complete Tokenizer
                 else {
+                    startTime = System.currentTimeMillis();
                     CompleteTokenizer completeTokenizer = new CompleteTokenizer();
                     completeTokenizer.tokenize(documents);
                     listTerms = completeTokenizer.getTerms();
@@ -77,7 +82,7 @@ public class Main {
                     System.out.println("**********************************************");
                 }
                 // Create the Indexer
-                indexer = new Indexer(listTerms, indexerFile);
+                indexer = new Indexer(listTerms, indexerFile, args[1]);
                 // Get the vocabulary size
                 System.out.println("Vocabulary Size: " + indexer.getVocabularySize());
                 System.out.println("----------------------------------------------");
@@ -92,7 +97,10 @@ public class Main {
                 List<Pair<String, Integer>> termsFreq = indexer.getTermsWithHigherFreq();
                 for (Pair<String, Integer> term : termsFreq)
                     System.out.println(term);
+                long stopTime = System.currentTimeMillis();
+                long elapsedTime = stopTime - startTime;
                 System.out.println("**********************************************");
+                System.out.println("Indexer time: " + elapsedTime + " ms");
             } else {
                 System.err.println("ERROR: Invalid choose of tokenizer! Choose t1 or t2.");
                 System.exit(1);

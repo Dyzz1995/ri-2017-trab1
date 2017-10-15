@@ -35,14 +35,6 @@ public class SimpleTokenizer implements Tokenizer{
         return terms;
     }
     
-    /**
-     * Get vocabulary size.
-     * @return size of terms list
-     */
-    public int getVocabularySize() {
-        return terms.size();
-    }
-    
     // Tokenizing all documents.
     public void tokenize(List<Document> documents) {
         for(int i = 0; i < documents.size(); i++){

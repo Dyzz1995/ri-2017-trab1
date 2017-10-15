@@ -40,13 +40,16 @@ public class Indexer {
      * @param file
      * @throws FileNotFoundException
      */
-    public Indexer(List<Pair<String, Integer>> terms, File file) throws FileNotFoundException {
+    public Indexer(List<Pair<String, Integer>> terms, File file, String tokenizerType) throws FileNotFoundException {
         this.terms = terms;
         stopWords = new ArrayList<>();
         indexer = new TreeMap<>();
-        loadStopwords();
-        stopwordsFiltering();
-        stemmingWords();
+        if (tokenizerType.equals("t2")) {
+            System.out.println("enter");
+            loadStopwords();
+            stopwordsFiltering();
+            stemmingWords();
+        }
         indexWords();
         writeToFile(file);
     }
