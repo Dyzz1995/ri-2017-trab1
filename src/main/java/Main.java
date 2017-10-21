@@ -1,6 +1,3 @@
-
-
-
 import Tokenizers.SimpleTokenizer;
 import CorpusReader.Parser;
 import CorpusReader.XMLParser;

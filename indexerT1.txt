@@ -7127,3 +7127,5 @@ zones,828:1,1072:1
 zoom,374:2
 zuk,890:1
 zurich,792:1,1137:1
+
+-> Tokenizers.SimpleTokenizer

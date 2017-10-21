@@ -1,5 +1,7 @@
 package Indexer;
 
+import Tokenizers.CompleteTokenizer;
+import Tokenizers.SimpleTokenizer;
 import Utils.Pair;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,20 +34,23 @@ public class Indexer {
     // List of stopwords to filter
     private final List<String> stopWords;
     // Indexer. The Indexer has a list of terms like [term, docId: frequency] 
-    private Map<String, List<Pair<Integer, Integer>>> indexer;
+    private final Map<String, List<Pair<Integer, Integer>>> indexer;
+    // Type of tokenizer
+    private final String tokenizeType;
     
     /**
      * Constructor. An Indexer needs the terms and the filename to write.
      * @param terms
      * @param file
+     * @param tokenizerType
      * @throws FileNotFoundException
      */
     public Indexer(List<Pair<String, Integer>> terms, File file, String tokenizerType) throws FileNotFoundException {
         this.terms = terms;
+        this.tokenizeType = tokenizerType;
         stopWords = new ArrayList<>();
         indexer = new TreeMap<>();
         if (tokenizerType.equals("t2")) {
-            System.out.println("enter");
             loadStopwords();
             stopwordsFiltering();
             stemmingWords();
@@ -215,6 +220,11 @@ public class Indexer {
                         pw.print(docId + ":" + freq + ",");
                 }
             }
+            if (tokenizeType.equals("t1"))
+               pw.println("\n-> " + SimpleTokenizer.class.getName());
+            else
+                pw.println("\n-> " + CompleteTokenizer.class.getName());
+            pw.close();
         }
     }
 }
